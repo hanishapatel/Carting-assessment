@@ -10,6 +10,7 @@ const Cart = () => {
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const [loading, setLoading] = useState(false)
+  const [showBuyAll, setShowBuyAll] = useState(false)
 
   const orderNow = async () => {
     try {
@@ -35,6 +36,10 @@ const Cart = () => {
       setLoading(false)
     }
   }
+
+  const handleBuyAllClick = () => {
+  alert('BuyAll button clicked! Total: $' + totalPrice.toFixed(2))
+}
 
   if (!user) {
     return (
@@ -126,6 +131,20 @@ const Cart = () => {
                     </span>
                   </div>
                 </div>
+
+                {/* BuyAll Button */}
+<button
+  className='w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
+  onClick={handleBuyAllClick}
+  disabled={items.length === 0}
+>
+  <div className='flex items-center justify-center'>
+    <svg className='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' />
+    </svg>
+    Buy All
+  </div>
+</button>
 
                 {/* Checkout Button */}
                 <button
