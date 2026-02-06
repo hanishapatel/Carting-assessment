@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import CartItem from '../components/CartItem'
 import toast from "react-hot-toast"
 import { Link } from 'react-router-dom'
+import BuyAll from '../components/BuyAll'
 
 const Cart = () => {
   const user = useSelector((state) => state.auth.user)
@@ -38,7 +39,15 @@ const Cart = () => {
   }
 
   const handleBuyAllClick = () => {
-  alert('BuyAll button clicked! Total: $' + totalPrice.toFixed(2))
+  setShowBuyAll(true)
+}
+const handleModalClose = () => {
+  setShowBuyAll(false)
+}
+
+const handleBuyAllConfirm = () => {
+  alert('Purchase confirmed! This will call the backend next.')
+  setShowBuyAll(false)
 }
 
   if (!user) {
@@ -172,6 +181,15 @@ const Cart = () => {
                     </div>
                   )}
                 </button>
+
+                <BuyAll
+        isOpen={showBuyAll}
+        onClose={handleModalClose}
+        onConfirm={handleBuyAllConfirm}
+        totalPrice={totalPrice}
+        itemCount={items.length}
+        loading={false}
+      />
 
                
               </div>

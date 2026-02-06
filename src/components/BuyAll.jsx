@@ -83,10 +83,7 @@ const BuyAll = ({ isOpen, onClose, onConfirm, totalPrice, itemCount, loading }) 
             </button>
           </div>
 
-          {/* Security Note */}
-          <p className='text-xs text-center text-gray-500 mt-4'>
-            🔒 Your payment information is secure and encrypted
-          </p>
+          
         </div>
       </div>
     </div>
