@@ -46,10 +46,7 @@ const handleModalClose = () => {
   setShowBuyAll(false)
 }
 
-// const handleBuyAllConfirm = () => {
-//   alert('Purchase confirmed! This will call the backend next.')
-//   setShowBuyAll(false)
-// }
+
 const handleBuyAllConfirm = async () => {
   try {
     setBuyAllLoading(true)
@@ -65,15 +62,15 @@ const handleBuyAllConfirm = async () => {
     const data = await res.json()
     
     if (data.success) {
-      toast.success('Purchase successful! All items have been bought.')
+      toast.success('Purchase successful! All items have been bought.', {duration:5000})
       setShowBuyAll(false)
       // Refresh the page to show empty cart
       window.location.reload()
     } else {
-      toast.error('Purchase failed: ' + data.message)
+      toast.error('Purchase failed: ' + data.message, { duration: 5000 })
     }
   } catch (error) {
-    toast.error('Purchase failed: ' + error.message)
+    toast.error('Purchase failed: ' + error.message, { duration: 5000 })
   } finally {
     setBuyAllLoading(false)
   }

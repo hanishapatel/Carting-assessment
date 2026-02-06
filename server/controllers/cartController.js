@@ -265,9 +265,11 @@ const checkOut = async (req, res) => {
         }
 
         // Calculate total price
-        const totalPrice = items.reduce((total, item) => {
-            return total + (item.price * item.quantity)
-        }, 0)
+        const totalPrice = parseFloat(
+    items.reduce((total, item) => {
+        return total + (item.price * item.quantity)
+    }, 0).toFixed(2)
+)
 
         // Validate each item has required fields
         for (const item of items) {
