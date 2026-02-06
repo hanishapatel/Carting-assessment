@@ -241,6 +241,64 @@ const checkOut = async (req, res) => {
         })
     }
   }
+  const buyAll = async (req, res) => {
+    try {
+        const userId = req.id
+        const { items } = req.body
+
+        // Validate user
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "You are not authorized."
+            })
+        }
+
+        // Validate cart items
+        if (!items || items.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Cart is empty. Cannot process purchase."
+            })
+        }
+
+        // Calculate total price
+        const totalPrice = items.reduce((total, item) => {
+            return total + (item.price * item.quantity)
+        }, 0)
+
+        // Validate each item has required fields
+        for (const item of items) {
+            if (!item.id || !item.title || !item.price || !item.quantity) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid item data in cart."
+                })
+            }
+        }
+
+        // Clear the user's cart after successful purchase
+        user.cart = []
+        await user.save()
+
+        res.status(200).json({
+            success: true,
+            message: "Purchase completed successfully!",
+            data: {
+                itemCount: items.length,
+                totalPrice: totalPrice,
+                purchaseDate: new Date()
+            }
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
 module.exports = {
     addToCart,
