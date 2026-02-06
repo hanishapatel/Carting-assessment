@@ -154,10 +154,6 @@ const decrementQuantity = async (req, res) => {
         }
 
 
-
-        
-
-
         if (user.cart[productIndex].quantity > 1) {
             user.cart[productIndex].quantity -= 1
             await user.save()
@@ -242,6 +238,8 @@ const checkOut = async (req, res) => {
         })
     }
   }
+
+  //backend endpoint function to handle the BuyAll 
   const buyAll = async (req, res) => {
     try {
         const userId = req.id
@@ -266,10 +264,10 @@ const checkOut = async (req, res) => {
 
         // Calculate total price
         const totalPrice = parseFloat(
-    items.reduce((total, item) => {
-        return total + (item.price * item.quantity)
-    }, 0).toFixed(2)
-)
+            items.reduce((total, item) => {
+                return total + (item.price * item.quantity)
+            }, 0).toFixed(2)
+        )
 
         // Validate each item has required fields
         for (const item of items) {
@@ -306,13 +304,13 @@ const checkOut = async (req, res) => {
             }
         })
 
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })  
+        }
     }
-}
 
 module.exports = {
     addToCart,
