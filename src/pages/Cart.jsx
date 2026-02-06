@@ -40,41 +40,41 @@ const Cart = () => {
   }
 
   const handleBuyAllClick = () => {
-  setShowBuyAll(true)
-}
-const handleModalClose = () => {
-  setShowBuyAll(false)
-}
-
-
-const handleBuyAllConfirm = async () => {
-  try {
-    setBuyAllLoading(true)
-    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/cart/buyall`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: 'include',
-      body: JSON.stringify({ items })
-    })
-
-    const data = await res.json()
-    
-    if (data.success) {
-      toast.success('Purchase successful! All items have been bought.', {duration:5000})
-      setShowBuyAll(false)
-      // Refresh the page to show empty cart
-      window.location.reload()
-    } else {
-      toast.error('Purchase failed: ' + data.message, { duration: 5000 })
-    }
-  } catch (error) {
-    toast.error('Purchase failed: ' + error.message, { duration: 5000 })
-  } finally {
-    setBuyAllLoading(false)
+    setShowBuyAll(true)
   }
-}
+  const handleModalClose = () => {
+    setShowBuyAll(false)
+  }
+
+  {/* Buy All button function  */}
+  const handleBuyAllConfirm = async () => {
+    try {
+      setBuyAllLoading(true)
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/cart/buyall`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include',
+        body: JSON.stringify({ items })
+      })
+
+      const data = await res.json()
+      
+      if (data.success) {
+        toast.success('Purchase successful! All items have been bought.', {duration:5000})
+        setShowBuyAll(false)
+        // Refresh the page to show empty cart
+        window.location.reload()
+      } else {
+        toast.error('Purchase failed: ' + data.message, { duration: 5000 })
+      }
+    } catch (error) {
+      toast.error('Purchase failed: ' + error.message, { duration: 5000 })
+    } finally {
+      setBuyAllLoading(false)
+    }
+  }
 
   if (!user) {
     return (
@@ -168,18 +168,18 @@ const handleBuyAllConfirm = async () => {
                 </div>
 
                 {/* BuyAll Button */}
-<button
-  className='w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
-  onClick={handleBuyAllClick}
-  disabled={items.length === 0}
->
-  <div className='flex items-center justify-center'>
-    <svg className='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' />
-    </svg>
-    Buy All
-  </div>
-</button>
+                <button
+                  className='w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
+                  onClick={handleBuyAllClick}
+                  disabled={items.length === 0}
+                >
+                  <div className='flex items-center justify-center'>
+                    <svg className='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' />
+                    </svg>
+                    Buy All
+                  </div>
+                </button>
 
                 {/* Checkout Button */}
                 <button
@@ -208,14 +208,15 @@ const handleBuyAllConfirm = async () => {
                   )}
                 </button>
 
+                {/* BuyAll Modal component*/}
                 <BuyAll
-        isOpen={showBuyAll}
-        onClose={handleModalClose}
-        onConfirm={handleBuyAllConfirm}
-        totalPrice={totalPrice}
-        itemCount={items.length}
-        loading={buyAllLoading}
-      />
+                  isOpen={showBuyAll}
+                  onClose={handleModalClose}
+                  onConfirm={handleBuyAllConfirm}
+                  totalPrice={totalPrice}
+                  itemCount={items.length}
+                  loading={buyAllLoading}
+                />
 
                
               </div>
