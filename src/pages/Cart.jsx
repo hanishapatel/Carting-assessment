@@ -64,8 +64,10 @@ const Cart = () => {
       if (data.success) {
         toast.success('Purchase successful! All items have been bought.', {duration:5000})
         setShowBuyAll(false)
-        // Refresh the page to show empty cart
-        window.location.reload()
+        setTimeout(function() {
+          window.location.reload();
+        }, 5000);
+        
       } else {
         toast.error('Purchase failed: ' + data.message, { duration: 5000 })
       }
