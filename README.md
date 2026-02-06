@@ -20,7 +20,7 @@ Frontend Changes:
       o	Added modal state management
       o	Added handleBuyAllClick() and handleBuyAllConfirm() functions
       o	Integrated API call to /api/cart/buyall
-   
+    
 Backend Changes:
   1. Created New Model
     •	server/models/order.js - Order schema for storing purchase history
