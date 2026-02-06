@@ -1,4 +1,5 @@
 const User = require("../models/user")
+const Order = require('../models/order') 
 const stripe = require('stripe')(process.env.STRIPE_KEY)
 
 const addToCart = async (req, res) => {
@@ -277,6 +278,16 @@ const checkOut = async (req, res) => {
                 })
             }
         }
+        // Create and save order to database
+        const newOrder = new Order({
+            user: userId,
+            items: items,
+            totalPrice: totalPrice,
+            totalItems: items.length,
+            status: 'completed'
+        })
+
+        await newOrder.save()
 
         // Clear the user's cart after successful purchase
         user.cart = []
@@ -286,6 +297,7 @@ const checkOut = async (req, res) => {
             success: true,
             message: "Purchase completed successfully!",
             data: {
+                orderId: newOrder._id,
                 itemCount: items.length,
                 totalPrice: totalPrice,
                 purchaseDate: new Date()
@@ -306,5 +318,6 @@ module.exports = {
     incrementQuantity,
     decrementQuantity,
     checkOut,
+    buyAll,
     clearCart
 }
