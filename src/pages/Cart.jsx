@@ -12,6 +12,7 @@ const Cart = () => {
 
   const [loading, setLoading] = useState(false)
   const [showBuyAll, setShowBuyAll] = useState(false)
+  const [buyAllLoading, setBuyAllLoading] = useState(false)
 
   const orderNow = async () => {
     try {
@@ -45,9 +46,37 @@ const handleModalClose = () => {
   setShowBuyAll(false)
 }
 
-const handleBuyAllConfirm = () => {
-  alert('Purchase confirmed! This will call the backend next.')
-  setShowBuyAll(false)
+// const handleBuyAllConfirm = () => {
+//   alert('Purchase confirmed! This will call the backend next.')
+//   setShowBuyAll(false)
+// }
+const handleBuyAllConfirm = async () => {
+  try {
+    setBuyAllLoading(true)
+    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/cart/buyall`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include',
+      body: JSON.stringify({ items })
+    })
+
+    const data = await res.json()
+    
+    if (data.success) {
+      toast.success('Purchase successful! All items have been bought.')
+      setShowBuyAll(false)
+      // Refresh the page to show empty cart
+      window.location.reload()
+    } else {
+      toast.error('Purchase failed: ' + data.message)
+    }
+  } catch (error) {
+    toast.error('Purchase failed: ' + error.message)
+  } finally {
+    setBuyAllLoading(false)
+  }
 }
 
   if (!user) {
@@ -188,7 +217,7 @@ const handleBuyAllConfirm = () => {
         onConfirm={handleBuyAllConfirm}
         totalPrice={totalPrice}
         itemCount={items.length}
-        loading={false}
+        loading={buyAllLoading}
       />
 
                
